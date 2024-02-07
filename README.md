@@ -1,1 +1,1 @@
-# Predict the yield of thermogravimetric using deep learning models.
+# Machine learning model for the prediction of total yield of biochar derived from agricultural biomass by pyrolysis.
