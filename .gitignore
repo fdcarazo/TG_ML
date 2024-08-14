@@ -1,5 +1,6 @@
 ### AL ###
 # emacs files-.
+*~
 *.py~
 # my local/temp files-.
 *.py_
