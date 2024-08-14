@@ -1,0 +1,26 @@
+### AL ###
+# emacs files-.
+*.py~
+# my local/temp files-.
+*.py_
+# my virtual environment-.
+*.venv
+# some gen files-.
+version.py
+modules_version.txt
+# models (NN's models)-.
+MLP_OK_05032024.py
+MLP_OK_05032024.py
+ffnn_bnn.py
+ffnn_ensemble.py
+ffnn_maml.py
+ffnn_maml_from_scratch.py
+plot_losses.py
+save.py
+save_model.py
+train_val_BNN.py
+train_val_FFNN-OK_05032024.py
+train_val_MAML.py
+MLP_transf.py
+# default folders and files
+__pycache__
