@@ -9,6 +9,8 @@
 # some gen files-.
 version.py
 modules_version.txt
+# folder with figures, Pytorch's models and logs files
+res_temp
 # models (NN's models)-.
 # default folders and files
 __pycache__

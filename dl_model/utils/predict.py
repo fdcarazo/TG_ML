@@ -268,9 +268,9 @@ class Predict():
             ax= fig.add_subplot(gs[idx])
             y_true= self.y_true[:,idx]; y_pred= self.y_pred[:,idx]
             # print(np.shape(self.x), np.shape(y_pred), np.shape(y_true))
-            plt.scatter(self.x[:,0], y_pred, color='red', marker='>',
+            plt.scatter(self.x[:,4], y_pred, color='red', marker='>',
                         s=3, label=str(col)+'pred', alpha=0.5)
-            plt.scatter(self.x[:,0], y_true, color='greenyellow', marker='<',
+            plt.scatter(self.x[:,4], y_true, color='greenyellow', marker='<',
                         s=3, label=str(col)+'true', alpha=0.5)
             plt.legend(loc='best')
 
@@ -372,8 +372,8 @@ class Predict():
         # fig= plt.figure(figsize=(8, 4))  # @ 1 subfigure-.
         palette= sns.color_palette('mako_r',4)
         
-        self.plot_3d_lls(self.x[:,0],
-                         self.x[:,1],
+        self.plot_3d_lls(self.x[:,4],
+                         self.x[:,3],
                          self.y_true,
                          self.y_pred,
                          dir_save,

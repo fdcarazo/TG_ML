@@ -174,9 +174,8 @@ def main(config) -> int:
     # TEMPORARY is here (I can't pass in yaml config file, I don't know how do that)
     # layers=[(2048, nn.ReLU(),None), # until now it doesn't work from yaml file-.
     #        (output_size,None,None)]
-    layers = [(1024, nn.ReLU(), None),  # for now it isn't work from yaml file-.
-              (512, nn.ReLU(), None),  # for now it isn't work from yaml file-.
-              (256, nn.ReLU(), None),  # for now it isn't work from yaml file-.
+    layers = [(512, nn.ReLU(), None),  # for now it isn't work from yaml file-.
+              # (256, nn.ReLU(), None),  # for now it isn't work from yaml file-.
               # (1024,nn.ReLU(),None),  # for now it isn't work from yaml file-.
               (output_size, None, None)]
 
