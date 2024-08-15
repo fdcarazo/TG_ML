@@ -377,7 +377,7 @@ biomass_type = ['MCP5', 'MCP10', 'MCP15',
                 'ESP10', 'ESP15', 'ESP20',
                 'PP5', 'PP10', 'PP15',
                 #'OP5', 'OP10', 'OP15',
-                #'SD5', 'SD10', 'SD15'
+                'SD5', 'SD10', 'SD15'
                 ]
 df_names = list()
 df_list = list()
@@ -416,7 +416,7 @@ print(df_alls)
 print(df_alls_encoded, df_alls_encoded.columns, df_alls_encoded.shape, sep='\n')
 
 
-i_name = 'MSP'
+i_name = 'SD'
 indices = df_alls.index[df_alls['biomass_type'].str.contains(i_name)].tolist()
 df_alls_filtered = df_alls.loc[indices]
 
