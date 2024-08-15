@@ -38,7 +38,7 @@ sp.run(['clear'])
 # root_path = '/home/fcarazo/diploDatos2022/trabajoPirolisis_IIQ/'
 # fileName = 'DatosParaRNA_Orig.xlsx'
 # root_path = '/home/fdcarazo/my_github/kinetics/ds/'
-root_path = '/home/fcarazo/my_github/kinetics/ds/'
+root_path = '/home/fdcarazo/my_github/TG_ML/dl_model/ds/'
 fileName = 'DATOScRUDOSpARAeNTRENARlArED_mod.xlsx'
 
 
@@ -376,8 +376,9 @@ biomass_type = ['MCP5', 'MCP10', 'MCP15',
                 'EU10', 'EU15', 'EU20',
                 'ESP10', 'ESP15', 'ESP20',
                 'PP5', 'PP10', 'PP15',
-                'OP5', 'OP10', 'OP15',
-                'SD5', 'SD10', 'SD15']
+                #'OP5', 'OP10', 'OP15',
+                #'SD5', 'SD10', 'SD15'
+                ]
 df_names = list()
 df_list = list()
 for i, i_biomass_type in enumerate(biomass_type):
@@ -454,8 +455,8 @@ plt.ylabel('mass_porc')
 df_alls = df_alls.sample(frac=1).reset_index(drop=True)
 df_alls_encoded = df_alls_encoded.sample(frac=1).reset_index(drop=True)
 
-print(df_alls)
-print(df_alls_encoded)
+print(df_alls, df_alls.columns, sep='\n')
+print(df_alls_encoded, df_alls_encoded.columns, sep='\n')
 
 # save DataSets in csv format-.
 df_alls.to_csv(root_path+'all.csv')
