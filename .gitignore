@@ -9,7 +9,8 @@
 # some gen files-.
 version.py
 modules_version.txt
-# folder with figures, Pytorch's models and logs files
+# folders with papers (my_refs), figures, Pytorch's models and logs files-.
+papers
 res_temp
 # models (NN's models)-.
 # default folders and files
