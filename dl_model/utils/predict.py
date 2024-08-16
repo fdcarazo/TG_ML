@@ -30,13 +30,12 @@ class Predict():
     def __init__(self, x, y_true, y_pred, feat_scal, targ_scal, feat_vars, targ_vars):
         # MBC, add a label to control if features and targets
         # were standarized or scaled-.
-        self.x= feat_scal.inverse_transform(x)  # used to plot y_pred and y_true vs. [T, dT/dt]-.
+        self.x = feat_scal.inverse_transform(x)  # used to plot y_pred and y_true vs. [T, dT/dt]-.
         # Apply inverse scaling in a cell before the figure cells-.
-        self.y_true= targ_scal.inverse_transform(y_true)
-        self.y_pred= targ_scal.inverse_transform(y_pred)
-        self.feat_vars= feat_vars
-        self.targ_vars= targ_vars
-
+        self.y_true = targ_scal.inverse_transform(y_true)
+        self.y_pred = targ_scal.inverse_transform(y_pred)
+        self.feat_vars = feat_vars
+        self.targ_vars = targ_vars
         
     def plot_corr_true_pred_mod(self, dir_save):
         ''' 
@@ -268,9 +267,9 @@ class Predict():
             ax= fig.add_subplot(gs[idx])
             y_true= self.y_true[:,idx]; y_pred= self.y_pred[:,idx]
             # print(np.shape(self.x), np.shape(y_pred), np.shape(y_true))
-            plt.scatter(self.x[:,4], y_pred, color='red', marker='>',
+            plt.scatter(self.x[:,1], y_pred, color='red', marker='>',
                         s=3, label=str(col)+'pred', alpha=0.5)
-            plt.scatter(self.x[:,4], y_true, color='greenyellow', marker='<',
+            plt.scatter(self.x[:,1], y_true, color='greenyellow', marker='<',
                         s=3, label=str(col)+'true', alpha=0.5)
             plt.legend(loc='best')
 
@@ -311,6 +310,8 @@ class Predict():
         
         fig = plt.figure(figsize=(8, 8))    
         ax = fig.add_subplot(111, projection='3d')
+        # print(np.shape(x),np.shape(y), np.shape(z), np.shape(lls_sol), sep='\n')
+        
         ax.scatter(x, y, z, label='true', c= 'blueviolet', marker='>', alpha= 0.5)
         ax.scatter(x, y, lls_sol, label='predicted', c= 'indianred', marker= '<', alpha= 0.5)
         ax.legend()
@@ -371,11 +372,13 @@ class Predict():
         # gs= gridspec.GridSpec(1,1) # 1 subfigure (it's a function of number of targets vars)-.
         # fig= plt.figure(figsize=(8, 4))  # @ 1 subfigure-.
         palette= sns.color_palette('mako_r',4)
-        
-        self.plot_3d_lls(self.x[:,4],
-                         self.x[:,3],
-                         self.y_true,
-                         self.y_pred,
+
+        # print(np.shape(self.x), np.shape(y_pred), np.shape(y_true))
+
+        self.plot_3d_lls(self.x[:,1],
+                         self.x[:,0],
+                         self.y_true[:,0],
+                         self.y_pred[:,0],
                          dir_save,
                          '$TG=f(T,dT/dt)$')
         return None

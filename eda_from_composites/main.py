@@ -169,9 +169,9 @@ def main(config) -> int:
     # the features into a reduced number of dimensions that preserve the
     # greatest variance, or independent components analysis (ICA) which
     # aims to find the independent sources in a set of features-.
-    
+
     # feature engineering using linear_Model and Recursive_Model_Elimination-.
-    feat_sel_obj = Feature_Selection(df, cfg_obj.feat_names,
+    feat_sel_obj = Feature_Selection(df.sample(frac=0.1), cfg_obj.feat_names,
                                      cfg_obj.targ_names)
     feat_sel_obj.get_feature_selection(feat_sel_obj.__class__.__name__)
     

@@ -1,0 +1,68 @@
+##
+## config file for DL configuration files-.
+##
+## @AUTHOR: Fernando Diego Carazo (@buenaluna)-.
+##
+## start_date: lun 05 ago 2024 21:36:44 -03-.
+## last_modify (Ar): -.
+##
+
+gen_options:
+  save: True
+  dir_save: '/home/fdcarazo/my_github/TG_ML/dl_model/res_temp/'
+  dir_results: '/home/fdcarazo/my_github/TG_ML/dl_model/res_temp/'
+  dir_logs: '/home/fdcarazo/my_github/TG_ML/dl_model/res_temp/'
+  vars_names: ['C', 'H', 'O', 'heat_rate', 'T', 'mass_porc', 'biomass_MSP']
+  # feat_names: ['C', 'H', 'O', 'heat_rate', 'T', 'biomass_MCP']
+  #  feat_names: ['C', 'H', 'O', 'heat_rate', 'T']
+  feat_names: ['heat_rate', 'T']
+  targ_names: ['mass_porc']
+  nnn: 10 # number of NN to be used in uncertainty determination-.
+  quart: 2 # uncertaninty interval of 95%-.
+
+scaler:
+  type_sca: 'StandardScaler()'
+  test_size: 0.2
+  shuffle: True
+  save: True
+
+train_test_torch: # train_test_torch_dataset_dataloader
+  rand: 42
+  test_frac: 0.2
+  shuffle: True
+  ## torch.DataLoader-.
+  batch_size: 5000
+  shuffle_torch: True
+  
+dataset:
+  path: '/home/fdcarazo/my_github/TG_ML/dl_model/ds/'
+#  name: 'all.csv'
+  name: 'all_encoded_MSP.csv'
+##	  name: 'all_encoded.csv'
+
+model:
+  name: 'MLP-_' # 1-MLP-_, 2-BNNbnn-_, 3-MAML-_, 3-MAML_from_scratch-_, and
+  ## 5-Ensemble-*: with:
+  ## * == FusionRegressor, BaggingRegressor, GradientBoostingRegressor, SnapshotEnsembleRegressor
+  ##  Ensemble-SnapshotEnsembleRegressor
+  ## general parameters (for FFNN,BNNbnn,MAML)
+  layers_architecture: [[5096, nn.ReLU(), None], [2048, nn.ReLU(), None], [1024, nn.ReLU(), None], [output_size, None, None]]
+  lr: 1.0e-2
+  optimizer: 'optim.Adam' # optim.SGD
+  loss: nn.MSELoss()
+  epochs: 100
+  weight_decay: 0.0
+  momentum: 0.99
+  plot_loss: True
+  save: True
+  ## for BayesNeuralNetwork (with torchbnn)-.
+  kl_l: bnn.BKLLoss() # kl_loss
+  kl_w: 0.1 # kl_weight
+  ## for Pytorch-Maml model (from scratch)-.
+  optimizer_inner: optim.Adam # optim.SGD
+  num_outer_upd: 10
+  num_inner_upd: 3
+  lr_outer: 1.0e-3
+  lr_inner: 1.0e-2
+  ## for Pytorch Ensemble models (torchensemble)-.
+  n_e: 2 # number of estimators

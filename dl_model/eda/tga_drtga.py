@@ -369,16 +369,18 @@ class calc_Deriv():
 
 # 1- before start I check that folder and file exists-.
 # pending-.
-biomass_type = ['MCP5', 'MCP10', 'MCP15',
-                'MSP5', 'MSP10', 'MSP15',
-                'OU10', 'OU15', 'OU20',
-                'MV10', 'MV15', 'MV20',
-                'EU10', 'EU15', 'EU20',
-                'ESP10', 'ESP15', 'ESP20',
-                'PP5', 'PP10', 'PP15',
-                #'OP5', 'OP10', 'OP15',
+biomass_type = [# 'MCP5', 'MCP10', 'MCP15',
+                # 'MSP5', 'MSP10', 'MSP15',
+                # 'OU10', 'OU15', 'OU20',
+                # 'MV10', 'MV15', 'MV20',
+                # 'EU10', 'EU15', 'EU20',
+                # 'ESP10', 'ESP15', 'ESP20',
+                # 'PP5', 'PP10', 'PP15',
+                # 'OP5', 'OP10', 'OP15',
                 'SD5', 'SD10', 'SD15'
                 ]
+bio_name= 'SD'
+
 df_names = list()
 df_list = list()
 for i, i_biomass_type in enumerate(biomass_type):
@@ -386,7 +388,8 @@ for i, i_biomass_type in enumerate(biomass_type):
     df_name = ''.join(['df', i_biomass_type.replace(' ', '')])
     df_names.append(df_name)
     df = pd.read_excel(root_path + fileName, sheet_name=i_biomass_type)
-    df['biomass_type'] = str(i_biomass_type)
+    # df['biomass_type'] = str(i_biomass_type)
+    df['biomass'] = str(bio_name)
     df_list.append(df)
 
     print('DataFrame column names {0}{1}'.format(df_list[i].columns, '\n'))
@@ -411,13 +414,15 @@ for i, i_biomass_type in enumerate(biomass_type):
 df_alls = pd.concat(df_list, axis=0, ignore_index=True)
 print(df_alls, df_alls.columns, df_alls.shape, sep='\n')
 # apply one_hot_enconding-.
-df_alls_encoded = pd.get_dummies(df_alls, columns=['biomass_type'])
+# df_alls_encoded = pd.get_dummies(df_alls, columns=['biomass_type'])
+df_alls_encoded = pd.get_dummies(df_alls, columns=['biomass'])
 print(df_alls)
 print(df_alls_encoded, df_alls_encoded.columns, df_alls_encoded.shape, sep='\n')
 
 
-i_name = 'SD'
-indices = df_alls.index[df_alls['biomass_type'].str.contains(i_name)].tolist()
+i_name = bio_name
+# indices = df_alls.index[df_alls['biomass_type'].str.contains(i_name)].tolist()
+indices = df_alls.index[df_alls['biomass'].str.contains(i_name)].tolist()
 df_alls_filtered = df_alls.loc[indices]
 
 print(df_alls_filtered)
@@ -459,5 +464,5 @@ print(df_alls, df_alls.columns, sep='\n')
 print(df_alls_encoded, df_alls_encoded.columns, sep='\n')
 
 # save DataSets in csv format-.
-df_alls.to_csv(root_path+'all.csv')
-df_alls_encoded.to_csv(root_path+'all_encoded.csv')
+df_alls.to_csv(root_path+'all_'+bio_name+'.csv')
+df_alls_encoded.to_csv(root_path+'all_encoded_'+bio_name+'.csv')

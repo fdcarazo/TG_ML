@@ -341,7 +341,7 @@ if __name__ == '__main__':
     # my auxiliaries methods-.
     # from utils.gen_tools import *
     # print(dir())
-    config_file = Path(__file__).parent/'config_file.yaml'
+    config_file = Path(__file__).parent/'config_file_SD.yaml'
     config = ga(config_file)
     
     # list the name and versions of the modules used-.
