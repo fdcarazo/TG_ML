@@ -1,0 +1,82 @@
+FDC:
+al hacer una EDA, que analisis se hacen de las features?, que
+graficos?, que analizo en cada uno y que conclusion saco?
+
+CHATGPT:
+Durante un Análisis Exploratorio de Datos (EDA), se realizan varios
+análisis de las características (features) de los datos para
+comprender mejor su naturaleza y extraer información útil. Aquí te
+detallo algunos tipos comunes de análisis y gráficos que se suelen
+utilizar en un EDA, junto con lo que se puede analizar en cada uno y
+las conclusiones que se pueden obtener: 
+
+1. **Resumen estadístico**: Se calculan estadísticas descriptivas
+básicas como la media, la mediana, la desviación estándar, el mínimo,
+el máximo, y los cuartiles de cada característica numérica. Esto
+proporciona una visión general de la distribución y variabilidad de
+los datos. 
+
+   - **Gráficos**: Histogramas, boxplots. 
+   - **Análisis**: Se observa la distribución de cada característica,
+   - **detectando posibles sesgos, outliers y la dispersión de los
+   - **datos. 
+   - **Conclusiones**: Permite entender la forma y la dispersión de
+   - **cada característica, identificar valores atípicos que podrían
+   - **ser errores o indicativos de fenómenos interesantes. 
+
+2. **Análisis de correlación**: Se examina la relación entre pares de
+características numéricas para identificar patrones de asociación o
+dependencia lineal. 
+
+   - **Gráficos**: Matriz de correlación, heatmap de correlación. 
+   - **Análisis**: Se busca qué características están fuertemente
+   - **correlacionadas, débilmente correlacionadas o no
+   - **correlacionadas entre sí. 
+   - **Conclusiones**: Ayuda a entender qué características podrían
+   - **estar relacionadas entre sí, lo que puede ser útil para la
+   - **selección de características en modelos predictivos y para
+   - **identificar posibles redundancias. 
+
+3. **Análisis univariado y bivariado**: Se analizan las
+características individualmente y en relación con otras
+características para explorar patrones y relaciones. 
+
+   - **Gráficos**: Scatter plots, pairplots, bar plots.
+   - **Análisis**: Se estudian las distribuciones individuales y cómo
+   - **se relacionan dos características entre sí. 
+   - **Conclusiones**: Proporciona información sobre patrones como
+   - **tendencias, agrupamientos, o la existencia de relaciones
+   - **lineales o no lineales entre variables. 
+
+4. **Análisis categórico**: Para características categóricas, se
+analiza la distribución de las categorías y cómo se relacionan con
+otras características. 
+
+   - **Gráficos**: Count plots, boxplots agrupados por categoría.
+   - **Análisis**: Se observa la frecuencia de cada categoría y cómo
+   - **varían las distribuciones de las características numéricas o
+   - **categóricas según la categoría. 
+   - **Conclusiones**: Permite entender la distribución y el impacto
+   - **de las categorías en otras características, así como detectar
+   - **posibles desequilibrios o patrones específicos de cada
+   - **categoría. 
+
+5. **Análisis temporal (si aplica)**: Si los datos tienen una
+dimensión temporal, se exploran tendencias y patrones a lo largo del
+tiempo. 
+
+   - **Gráficos**: Time series plots, series de tiempo agrupadas por
+   - **intervalos. 
+   - **Análisis**: Se busca identificar tendencias, estacionalidades,
+   - **y cambios en el comportamiento de las características a lo
+   - **largo del tiempo. 
+   - **Conclusiones**: Ayuda a entender cómo evolucionan las
+   - **características en función del tiempo y permite prever posibles
+   - **patrones futuros. 
+
+En general, el objetivo del EDA es obtener una comprensión profunda de
+los datos antes de aplicar cualquier modelo predictivo o análisis más
+avanzado. Las conclusiones obtenidas durante el EDA pueden guiar
+decisiones sobre el preprocesamiento de datos, la ingeniería de
+características, la selección de modelos, y la interpretación de los
+resultados finales. 

@@ -12,28 +12,25 @@ gen_options:
   dir_save: '/home/fdcarazo/my_github/TG_ML/dl_model/res_temp/'
   dir_results: '/home/fdcarazo/my_github/TG_ML/dl_model/res_temp/'
   dir_logs: '/home/fdcarazo/my_github/TG_ML/dl_model/res_temp/'
-  vars_names: ['C', 'H', 'O', 'heat_rate', 'T', 'mass_porc', 'biomass_type_ESP10', 'biomass_type_ESP15', 'biomass_type_ESP20', 'biomass_type_EU10', 'biomass_type_EU15', 'biomass_type_EU20', 'biomass_type_MCP10', 'biomass_type_MCP15', 'biomass_type_MCP5', 'biomass_type_MSP10', 'biomass_type_MSP15', 'biomass_type_MSP5', 'biomass_type_MV10', 'biomass_type_MV15', 'biomass_type_MV20', 'biomass_type_OU10', 'biomass_type_OU15', 'biomass_type_OU20', 'biomass_type_PP10', 'biomass_type_PP15', 'biomass_type_PP5']
-  feat_names: ['C', 'H', 'O', 'heat_rate', 'T', 'biomass_type_ESP10', 'biomass_type_ESP15', 'biomass_type_ESP20', 'biomass_type_EU10', 'biomass_type_EU15', 'biomass_type_EU20', 'biomass_type_MCP10', 'biomass_type_MCP15', 'biomass_type_MCP5', 'biomass_type_MSP10', 'biomass_type_MSP15', 'biomass_type_MSP5', 'biomass_type_MV10', 'biomass_type_MV15', 'biomass_type_MV20', 'biomass_type_OU10', 'biomass_type_OU15', 'biomass_type_OU20', 'biomass_type_PP10', 'biomass_type_PP15', 'biomass_type_PP5']
+  vars_names: ['C', 'H', 'O', 'heat_rate', 'T', 'mass_porc', 'biomass_type_ESP10', 'biomass_type_ESP15', 'biomass_type_ESP20', 'biomass_type_EU10', 'biomass_type_EU15', 'biomass_type_EU20', 'biomass_type_MCP10', 'biomass_type_MCP15', 'biomass_type_MCP5', 'biomass_type_MSP10', 'biomass_type_MSP15', 'biomass_type_MSP5', 'biomass_type_MV10', 'biomass_type_MV15', 'biomass_type_MV20', 'biomass_type_OU10', 'biomass_type_OU15', 'biomass_type_OU20', 'biomass_type_PP10', 'biomass_type_PP15', 'biomass_type_PP5', 'biomass_type_SD10', 'biomass_type_SD15', 'biomass_type_SD5']
+#  feat_names: ['C', 'H', 'O', 'heat_rate', 'T', 'biomass_type_ESP10', 'biomass_type_ESP15', 'biomass_type_ESP20', 'biomass_type_EU10', 'biomass_type_EU15', 'biomass_type_EU20', 'biomass_type_MCP10', 'biomass_type_MCP15', 'biomass_type_MCP5', 'biomass_type_MSP10', 'biomass_type_MSP15', 'biomass_type_MSP5', 'biomass_type_MV10', 'biomass_type_MV15', 'biomass_type_MV20', 'biomass_type_OU10', 'biomass_type_OU15', 'biomass_type_OU20', 'biomass_type_PP10', 'biomass_type_PP15', 'biomass_type_PP5', 'biomass_type_SD10', 'biomass_type_SD15', 'biomass_type_SD5']
+  feat_names: ['C', 'H', 'O', 'heat_rate', 'T']
   targ_names: ['mass_porc']
-#  vars_names: ["C","H","O","heat_rate","T","mass_porc","biomass_type"]
-#  feat_names: ["C","H","O","heat_rate","T"]
-#  feat_names: ["heat_rate","T"]
-#  targ_names: ["mass_porc"]
   nnn: 10 # number of NN to be used in uncertainty determination-.
   quart: 2 # uncertaninty interval of 95%-.
 
 scaler:
   type_sca: 'StandardScaler()'
-  test_size: 0.025
+  test_size: 0.1
   shuffle: True
   save: True
 
 train_test_torch: # train_test_torch_dataset_dataloader
   rand: 42
-  test_frac: 0.025
+  test_frac: 0.1
   shuffle: True
   ## torch.DataLoader-.
-  batch_size: 10000
+  batch_size: 5000
   shuffle_torch: True
   
 dataset:
@@ -49,7 +46,7 @@ model:
   ##  Ensemble-SnapshotEnsembleRegressor
   ## general parameters (for FFNN,BNNbnn,MAML)
   layers_architecture: [[5096, nn.ReLU(), None], [2048, nn.ReLU(), None], [1024, nn.ReLU(), None], [output_size, None, None]]
-  lr: 1.0e-3
+  lr: 1.0e-2
   optimizer: 'optim.Adam' # optim.SGD
   loss: nn.MSELoss()
   epochs: 100
