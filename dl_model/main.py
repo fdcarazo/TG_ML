@@ -94,8 +94,11 @@ def main(config) -> int:
 
     # 1- load dataset as pandas.DataFrame, features and targers vars names-.
     df = ld(cfg_obj.ds_path+cfg_obj.ds_file, cfg_obj.vars_names)
-
+    
     '''
+    vars = cfg_obj.feat_names + cfg_obj.targ_names
+    for var_i in vars: print(var_i, df[var_i].min(), df[var_i].max(),
+                             df[var_i].mean(), df[var_i].median()); input(1)
     print(df.shape)
     df.dropna(inplace=True)
     print(df.shape)

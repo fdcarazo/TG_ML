@@ -9,16 +9,16 @@
 
 gen_options:
   save: True
-  dir_save: '/home/fdcarazo/my_github/TG_ML/dl_model/res_temp/'
-  dir_results: '/home/fdcarazo/my_github/TG_ML/dl_model/res_temp/'
-  dir_logs: '/home/fdcarazo/my_github/TG_ML/dl_model/res_temp/'
-  vars_names: ['C', 'H', 'O', 'heat_rate', 'T', 'mass_porc', 'biomass_ESP', 'biomass_EU', 'biomass_MCP', 'biomass_MSP', 'biomass_MV', 'biomass_OU', 'biomass_PP', 'biomass_SD']
-  # vars_names: ['C', 'H', 'O', 'heat_rate', 'T', 'mass_porc']
-  feat_names: ['heat_rate', 'T']
-  targ_names: ['mass_porc']
+  dir_save: '/home/fdcarazo/my_github/TG_ML/noTracking_TGL/res_temp/'
+  dir_results: '/home/fdcarazo/my_github/TG_ML/noTracking_TGL/res_temp/'
+  dir_logs: '/home/fdcarazo/my_github/TG_ML/noTracking_TGL/res_temp/'
   # vars_names: ['C', 'H', 'O', 'heat_rate', 'T', 'mass_porc', 'biomass_ESP', 'biomass_EU', 'biomass_MCP', 'biomass_MSP', 'biomass_MV', 'biomass_OU', 'biomass_PP', 'biomass_SD']
-  # feat_names: ['C', 'H', 'O', 'heat_rate', 'T',  'biomass_ESP', 'biomass_EU', 'biomass_MCP', 'biomass_MSP', 'biomass_MV', 'biomass_OU', 'biomass_PP', 'biomass_SD']
+  # vars_names: ['C', 'H', 'O', 'heat_rate', 'T', 'mass_porc']
+  # feat_names: ['heat_rate', 'T']
   # targ_names: ['mass_porc']
+  vars_names: ['C', 'H', 'O', 'heat_rate', 'T', 'mass_porc', 'biomass_ESP', 'biomass_EU', 'biomass_MCP', 'biomass_MSP', 'biomass_MV', 'biomass_OU', 'biomass_PP', 'biomass_SD']
+  feat_names: ['C', 'H', 'O', 'heat_rate', 'T',  'biomass_ESP', 'biomass_EU', 'biomass_MCP', 'biomass_MSP', 'biomass_MV', 'biomass_OU', 'biomass_PP', 'biomass_SD']
+  targ_names: ['mass_porc']
   nnn: 10 # number of NN to be used in uncertainty determination-.
   quart: 2 # uncertaninty interval of 95%-.
 
@@ -38,7 +38,7 @@ train_test_torch: # train_test_torch_dataset_dataloader
   shuffle_torch: True
   
 dataset:
-  path: '/home/fdcarazo/my_github/TG_ML/dl_model/ds/'
+  path: '/home/fdcarazo/my_github/TG_ML/noTracking_TGL/ds/'
   # name: 'all.csv'
   # name: 'all_encoded.csv'
   name: 'all_encoded_all.csv'
@@ -54,7 +54,7 @@ model:
   lr: 1.0e-3
   optimizer: 'optim.Adam' # optim.SGD
   loss: nn.MSELoss()
-  epochs: 1000
+  epochs: 5000
   weight_decay: 0.0
   momentum: 0.99
   plot_loss: True
