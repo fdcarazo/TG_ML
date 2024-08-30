@@ -6,7 +6,7 @@
 #
 # @AUTHOR: Fernando Diego Carazo (@buenaluna) -.
 # start date (Fr): Tue Mar 19 12:19:01 CET 2024-.
-# last modify (Ar): -.
+# last modify (Ar): mié 21 ago 2024 11:52:38 -03-.
 ##
 # ====================================================================== INI79
 
@@ -14,6 +14,8 @@
 # 1- include packages, modules, variables, etc.-.
 import pandas as pd
 import pickle as pickle
+import numpy as np
+
 from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 import torch
@@ -37,18 +39,29 @@ class DataObject():
         self.targ_var= targ_var  # list-.
 
     # apply standardScaler
-    def scalerStandarize(self, sca:str, dir_save:str):
+    def scalerStandarize(self, sca:str, sca_targ: bool, dir_save:str):
         # sacalers used for dataframe, features and targets-.
         scaler_df, scaler_feat, scaler_targ= eval(sca), eval(sca), eval(sca)
-
+        
         # sacale/standarize all features, targets and a whole dataframe-.
         df_scal= scaler_df.fit_transform(self.df[self.feat_var+self.targ_var])
         feat_scal= scaler_feat.fit(self.df[self.feat_var])
-        targ_scal= scaler_targ.fit(self.df[self.targ_var])
-
+        targ_scal= scaler_targ.fit(self.df[self.targ_var])        
         # built pandasDataframe using dataframe scaled/standarized-.
         df_scal= pd.DataFrame(df_scal, columns=self.feat_var+self.targ_var)
+
+        # built pandasDataframe using only features scaled/standarized-.
+        feat_scaled = scaler_feat.fit_transform(self.df[self.feat_var])
+        arr_feat_Scaled = np.concatenate((feat_scaled,
+                                          self.df[self.targ_var].to_numpy(dtype=float)),
+                                         axis=1)
+        '''
+        print(np.mean(arr_feat_Scaled, axis=0),
+              np.std(arr_feat_Scaled, axis=0),
+              np.shape(arr_feat_Scaled), sep='\n'); input(88)
+        '''
         
+        df_feat_scal = pd.DataFrame(arr_feat_Scaled, columns=self.feat_var+self.targ_var)
         # save scalers-.
         feat_scal_name= dir_save+'/'+'featScaler.pkl'
         fsac= open(feat_scal_name, 'wb')
@@ -56,16 +69,17 @@ class DataObject():
         tsca= open(targ_scal_name, 'wb')
         all_scal_name= dir_save+'/'+'allScaler.pkl'
         asca= open(all_scal_name, 'wb')
+
         pickle.dump(scaler_feat, fsac)
         pickle.dump(scaler_targ, tsca)
         pickle.dump(scaler_df, asca)
         fsac.close(); tsca.close(); asca.close() 
         
-        return df_scal, feat_scal, targ_scal
-
+        return df_scal, df_feat_scal, feat_scal, targ_scal
 
     # split in train-test-.
     def train_test(self, df, df_scaled, rand:float, ts=0.1, shuff=True):
+        
         X_train, X_val, y_train, y_val=train_test_split(df_scaled[self.feat_var],
                                                         df_scaled[self.targ_var],
                                                         ## df[self.targ_var],

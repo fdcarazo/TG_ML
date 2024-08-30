@@ -51,6 +51,7 @@ class Config():
         self.quart= self.config['gen_options']['quart']
 
         ## 3- Scaler/Standarize, etc. dataset-.
+        self.scale_targ = self.config['scaler']['scale_targ']
         self.scaler_type= self.config['scaler']['type_sca']
         self.scaler_test_size= self.config['scaler']['test_size']
         self.scaler_shuffle= self.config['scaler']['shuffle']

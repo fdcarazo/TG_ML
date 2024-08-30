@@ -6,7 +6,7 @@
 # Prof. Dra.- Ing. Rosa Rodriguez - IIQ - CONICET - FI - UNSJ-.
 #
 # start_date: lun 04 jul 2022 09:50:29 -03-.
-# last_modify: mar jun  4 14:54:35 -03 2024-.
+# last_modify: mar 20 ago 2024 13:09:01 -03-.
 
 
 # modules importing-.
@@ -39,6 +39,7 @@ sp.run(['clear'])
 # fileName = 'DatosParaRNA_Orig.xlsx'
 # root_path = '/home/fdcarazo/my_github/kinetics/ds/'
 root_path = '/home/fdcarazo/my_github/TG_ML/dl_model/ds/'
+root_path_to_test = '/home/fdcarazo/my_github/TG_ML/dl_model/ds/toTest/'
 fileName = 'DATOScRUDOSpARAeNTRENARlArED_mod.xlsx'
 
 
@@ -369,17 +370,27 @@ class calc_Deriv():
 
 # 1- before start I check that folder and file exists-.
 # pending-.
-biomass_type = [# 'MCP5', 'MCP10', 'MCP15',
-                # 'MSP5', 'MSP10', 'MSP15',
-                # 'OU10', 'OU15', 'OU20',
-                # 'MV10', 'MV15', 'MV20',
-                # 'EU10', 'EU15', 'EU20',
-                # 'ESP10', 'ESP15', 'ESP20',
-                # 'PP5', 'PP10', 'PP15',
+biomass_type = ['MCP5', 'MCP10', 'MCP15',
+                'MSP5', 'MSP10', 'MSP15',
+                'OU10', 'OU15', 'OU20',
+                'MV10', 'MV15', 'MV20',
+                'EU10', 'EU15', 'EU20',
+                'ESP10', 'ESP15', 'ESP20',
+                'PP5', 'PP10', 'PP15',
                 # 'OP5', 'OP10', 'OP15',
                 'SD5', 'SD10', 'SD15'
                 ]
-bio_name= 'SD'
+bio_name = 'all'
+
+import re
+'''
+for i, i_biomass_type in enumerate(biomass_type):
+    # df['biomass_type'] = str(i_biomass_type)
+    print(re.findall(r'[a-zA-Z]+', str(i_biomass_type)))
+    print(re.findall(r'[a-zA-Z]+', str(i_biomass_type))[0])
+    print(type((re.findall(r'[a-zA-Z]+', str(i_biomass_type)))[0]))
+    input(11)
+'''
 
 df_names = list()
 df_list = list()
@@ -388,8 +399,20 @@ for i, i_biomass_type in enumerate(biomass_type):
     df_name = ''.join(['df', i_biomass_type.replace(' ', '')])
     df_names.append(df_name)
     df = pd.read_excel(root_path + fileName, sheet_name=i_biomass_type)
+
+    # print(re.findall(r'[a-zA-Z]+', str(i_biomass_type))[0], df.shape, sep='\n')
+    if re.findall(r'[a-zA-Z]+', str(i_biomass_type))[0] == 'MCP' or \
+       re.findall(r'[a-zA-Z]+', str(i_biomass_type))[0] == 'MSP':
+        df  = df.sample(frac=0.05)
+        df_tosave  = df.sample(frac=0.025)
+    # print(df.shape)
+    # input(345)
+
+    df_tosave.to_csv(root_path_to_test+i_biomass_type+'_test'+'.csv')
+    
     # df['biomass_type'] = str(i_biomass_type)
-    df['biomass'] = str(bio_name)
+    print(re.sub("[^\s\.]", "", str(i_biomass_type)))
+    df['biomass'] = re.findall(r'[a-zA-Z]+', str(i_biomass_type))[0]  # returns a list (take the first element)-.
     df_list.append(df)
 
     print('DataFrame column names {0}{1}'.format(df_list[i].columns, '\n'))

@@ -11,7 +11,7 @@
 #
 # start_date (Fr): Tue Mar 26 22:18:28 CET 2024-.
 # last_modify (Fr): -.
-# last_modify (Arg): -.
+# last_modify (Arg): mié 21 ago 2024 11:43:08 -03-.
 ##
 # ======================================================================= END79
 
@@ -91,7 +91,7 @@ def main(config) -> int:
     # 0- -.
     cfg_obj = cfg(config)
     # print(cfg_obj.ds_path, cfg_obj.ds_file, cfg_obj.vars_names); input(11)
-    
+
     # 1- load dataset as pandas.DataFrame, features and targers vars names-.
     df = ld(cfg_obj.ds_path+cfg_obj.ds_file, cfg_obj.vars_names)
 
@@ -143,9 +143,12 @@ def main(config) -> int:
     # 2-1- dataset as PandasDataframe-.
     do_obj = do(df, cfg_obj.feat_names, cfg_obj.targ_names)
     # 2-2- standarization-scaler and train and validation split-.
-    df_scal, feat_scal, targ_scal = do_obj.scalerStandarize(cfg_obj.scaler_type,
-                                                            cfg_obj.dir_save)
-    X_train, X_val, y_train, y_val = do_obj.train_test(df, df_scal, 42,
+    df_scal, df_feat_scal, feat_scal, targ_scal = do_obj.scalerStandarize(cfg_obj.scaler_type,
+                                                                          cfg_obj.scale_targ,
+                                                                          cfg_obj.dir_save)
+    # print(feat_scal, type(feat_scal), sep='\n'); input(12345)
+    df_split = df_scal if cfg_obj.scale_targ else df_feat_scal
+    X_train, X_val, y_train, y_val = do_obj.train_test(df, df_split, 42,
                                                        cfg_obj.test_frac, True)
     '''
     print(type(X_train), type(X_val), type(y_train), type(y_val)); input(33)
@@ -174,7 +177,7 @@ def main(config) -> int:
     # TEMPORARY is here (I can't pass in yaml config file, I don't know how do that)
     # layers=[(2048, nn.ReLU(),None), # until now it doesn't work from yaml file-.
     #        (output_size,None,None)]
-    layers = [(512, nn.ReLU(), None),  # for now it isn't work from yaml file-.
+    layers = [(1024, nn.ReLU(), None),  # for now it isn't work from yaml file-.
               # (256, nn.ReLU(), None),  # for now it isn't work from yaml file-.
               # (1024,nn.ReLU(),None),  # for now it isn't work from yaml file-.
               (output_size, None, None)]
@@ -236,7 +239,7 @@ def main(config) -> int:
         print("{0}The DL model's named {1} doesn't exist.{0}".
               format('\n', cfg_obj.DL_name)); exit(11)
     # DL MODELS - training and validation  == END ==-.
-    
+
     # print size of allocated tensors in GPU-.
     if device == 'cuda':
         print('Memory allocated in Cuda: {0} Kbytes.'.
@@ -258,7 +261,7 @@ def main(config) -> int:
     if cfg_obj.model_loss_save:
         save_dl_loss_obj = SaveDLModelLoss(cfg_obj.dir_save)
         save_dl_loss_obj.save_model(model)
-        save_dl_loss_obj.save_loss(ld)
+        save_dl_loss_obj.save_loss(ld_)
 
         
     # control TOTAL EXECUTION TIME-.
@@ -276,7 +279,8 @@ def main(config) -> int:
         # temp= feat_scal.inverse_transform(X_val)[:, 0]
         # vel_cal= feat_scal.inverse_transform(X_val)[:, 1]
         pred_obj = Predict(X_val, y_val, y_pred, feat_scal, targ_scal,
-                           cfg_obj.feat_names, cfg_obj.targ_names)
+                           cfg_obj.feat_names, cfg_obj.targ_names,
+                           cfg_obj.scale_targ)
         # pred_obj.plot_corr_true_pred()
     pred_obj.plot_corr_true_pred_mod(cfg_obj.dir_save)
     # pred_obj.plot_pred_error_display()
@@ -336,12 +340,12 @@ def main(config) -> int:
 
 # ======================================================================= INI79
 if __name__ == '__main__':
-    '''' to execute main methof -if this exist '''
+    '''' to execute main methof -if this exist ''' 
     
     # my auxiliaries methods-.
     # from utils.gen_tools import *
     # print(dir())
-    config_file = Path(__file__).parent/'config_file_SD.yaml'
+    config_file = Path(__file__).parent/'config_file_all_withoutOH.yaml'
     config = ga(config_file)
     
     # list the name and versions of the modules used-.
