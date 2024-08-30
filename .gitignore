@@ -10,9 +10,7 @@
 version.py
 modules_version.txt
 # folders with papers (my_refs), figures, Pytorch's models and logs files-.
-papers
-res_temp
-post
+noTracking_TGL/
 # models (NN's models)-.
 # default folders and files
 __pycache__
