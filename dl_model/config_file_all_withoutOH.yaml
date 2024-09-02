@@ -71,3 +71,10 @@ model:
   lr_inner: 1.0e-3
   ## for Pytorch Ensemble models (torchensemble)-.
   n_e: 2 # number of estimators
+
+hyper_optim:
+  apply: True
+  # OPTUNA block-.
+  name: 'optuna'  # 1-optuna -.
+  plot_optim_hist: False
+  test: False
