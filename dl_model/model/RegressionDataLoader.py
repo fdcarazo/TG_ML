@@ -20,5 +20,8 @@ import numpy as np
 # Definir la clase del conjunto de datos
 class RegressionDataLoader(DataLoader):
     def __init__(self, dataset, b_s:int, shuff:True):
-        self.dataloader = DataLoader(dataset, batch_size=b_s, shuffle=shuff)
+        self.dataloader = DataLoader(dataset, batch_size=b_s,
+                                     num_workers=2,
+                                     persistent_workers=True,
+                                     shuffle=shuff)
 # - =======================================================================END79

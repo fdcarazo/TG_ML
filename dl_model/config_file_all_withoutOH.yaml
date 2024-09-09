@@ -17,7 +17,8 @@ gen_options:
   # feat_names: ['heat_rate', 'T']
   # targ_names: ['mass_porc']
   vars_names: ['C', 'H', 'O', 'heat_rate', 'T', 'mass_porc', 'biomass_ESP', 'biomass_EU', 'biomass_MCP', 'biomass_MSP', 'biomass_MV', 'biomass_OU', 'biomass_PP', 'biomass_SD']
-  feat_names: ['C', 'H', 'O', 'heat_rate', 'T',  'biomass_ESP', 'biomass_EU', 'biomass_MCP', 'biomass_MSP', 'biomass_MV', 'biomass_OU', 'biomass_PP', 'biomass_SD']
+  # feat_names: ['C', 'H', 'O', 'heat_rate', 'T',  'biomass_ESP', 'biomass_EU', 'biomass_MCP', 'biomass_MSP', 'biomass_MV', 'biomass_OU', 'biomass_PP', 'biomass_SD']
+  feat_names: ['C', 'H', 'O', 'heat_rate', 'T',]
   targ_names: ['mass_porc']
   nnn: 10 # number of NN to be used in uncertainty determination-.
   quart: 2 # uncertaninty interval of 95%-.
@@ -34,7 +35,7 @@ train_test_torch: # train_test_torch_dataset_dataloader
   test_frac: 0.2
   shuffle: True
   # torch.DataLoader-.
-  batch_size: 2500
+  batch_size: 1000
   shuffle_torch: True
   
 dataset:
@@ -77,4 +78,5 @@ hyper_optim:
   # OPTUNA block-.
   name: 'optuna'  # 1-optuna -.
   plot_optim_hist: False
-  test: False
+  test: True
+  epochs: 250  # 500

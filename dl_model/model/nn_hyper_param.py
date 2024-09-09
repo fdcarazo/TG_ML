@@ -5,7 +5,7 @@
 #
 # @AUTHOR: Fernando Diego Carazo (@buenaluna) -.
 # start date (Arg): dom 01 sep 2024 08:41:53 -03-.
-# last modify (Arg): -.
+# last modify (Arg): vie 06 sep 2024 15:54:46 -03-.
 ##
 # ====================================================================== INI79
 
@@ -15,11 +15,12 @@
 import torch
 import torch.nn as nn
 import torch.optim as optim
-import pickle as pickle
 
-import torchbnn as bnn
+import time
 
-from .weight_init import weights_init
+from .weight_init import weights_init  # not used yet-.
+
+from .nn_for_optuna import RegressionModel
 
 # 2don't have problems between float datatype of torch and bnnNN
 # if torch.is_tensor(xx) else torch.tensor(xx,dtype=float) (float64) and float
@@ -29,91 +30,105 @@ torch.set_default_dtype(torch.float64)
 # - ======================================================================END79
 
 
-class nn_hyper_param_otim():
-    def __init__(self, features, targets):
-        self.features = features  # list-.
-        self.targets = targets  # list-.
-
-    # https://medium.com/pytorch/using-optuna-to-optimize-pytorch-hyperparameters-990607385e36
-    def define_model(self, trial, input_size, output_size):
-        '''
-        optimize the number of layers, hidden units and dropout ratio
-        in each layer
-        '''
-    
-        n_layers = trial.suggest_int('n_layers', 3, 1)
-        layers = []
-        
-        in_features= len(self.features)
-        for i in range(n_layers):
-            out_features= trial.suggest_int('n_units_l{}'.format(i), 256, 512)
-            layers.append(nn.Linear(in_features, out_features))
-            layers.append(nn.ReLU())
-            p = trial.suggest_uniform("dropout_l{}".format(i), 0.0, 0.2)
-            layers.append(nn.Dropout(p))
-            
-            in_features= out_features
-        
-        layers.append(nn.Linear(in_features, output_size))
-        # layers.append(nn.LogSoftmax(dim=1))
-
-        return nn.Sequential(*layers)
+class nn_hyper_param_optim():
+    def __init__(self, train_loader, val_loader, learning_rate, optimizer,
+                 loss, weight_decay, momentum):
+        self.device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+        self.train_dataloader = train_loader
+        self.val_dataloader = val_loader
+        self.learning_rate = learning_rate
+        self.optimizer = optimizer
+        self.loss = loss
+        self.weight_decay = weight_decay
+        self.momentum =  momentum                 
 
     # objective method for Optuna-.
-    def objective(self, trial, input_size, output_size, train_dataloader):
-        device=torch.device('cuda' if torch.cuda.is_available() else 'cpu')
-    
-        # model creation-.
-        model = self.define_model(trial, input_size, output_size).to(device)
-        model.apply(weights_init)  # weights initialization -.
-    
-        #  optimizers generation.
-        optimizer_name= trial.suggest_categorical('optimizer',
-                                                  ['Adam', 'RMSprop', 'SGD'])
-        # optimizer_name= trial.suggest_categorical('optimizer', ['Adam'])
-        lr = trial.suggest_loguniform('lr', 1e-3, 1e-1)
-        #### lr= 1.0e-2
-        optimizer= getattr(optim, optimizer_name)(model.parameters(), lr=lr)
-        criterion= nn.MSELoss()
-    
-        ## first define a dictionary to save train and validations loss values-.
-        ## loss_stats= {'train_loss_d': [],
-        ##             'val_loss_d': []
-        ##             }
-        loss_stats= {'train_loss_d': []}
-    
-        # train and validate final model (to have points to plot loss)-.
-        num_epochs= 100
-        ## dist.init_process_group(backend='gloo')
-        for epoch in range(num_epochs):        
-            train_epoch_loss= 0.0
-            model.train()
+    def objective(self, trial, input_size, output_size, n_epochs):
+
+        input_size = input_size  # example input size-.
+        # hyperparameters to optimize-.
+        hidden_layers = trial.suggest_int('hidden_layers', 1, 3)
+        hidden_units = trial.suggest_int('hidden_units', 512, 1024)
+        dropout_prob = trial.suggest_float('dropout_prob', 0.0, 0.5)
+        learning_rate = trial.suggest_loguniform('learning_rate', 1e-5, 1e-1)
+        # batch_size = trial.suggest_int('batch_size', 500, 1000)
         
-            for batch_features, batch_labels in train_dataloader:
-                ## send batch-datas to device-.
-                batch_features, batch_labels= batch_features.to(device), batch_labels.to(device)
-                # forward propagation and loss calculation-.
-                optimizer.zero_grad()
-                
-                outputs= model(batch_features)
-                loss= criterion(outputs, batch_labels)
-                
-                # backward propagation and weights and bias updates-.
-                loss.backward()
-                optimizer.step()
-                
-                train_epoch_loss += loss.item()
-                
-            # calculate and save the mean loss for each epoch-.
-            loss_stats['train_loss_d'].append(train_epoch_loss/len(train_dataloader))
+        # initialize model, criterion, and optimizer-.
         
-            # if the time limit is achieved or the process is interrumpted, the reining is stoped-.
-            ## if trial.should_prune():
-            ##     break
+        model = RegressionModel(input_size, output_size, hidden_layers,
+                                hidden_units, dropout_prob, self.learning_rate,
+                                self.optimizer, self.loss, self.weight_decay,
+                                self.momentum)
+        criterion = nn.MSELoss()
+        optimizer = optim.Adam(model.parameters(), lr=learning_rate)
+
+        # dictionary to save train and validation looses as lists-.
+        loss_dir = {'train_loss': [], 'val_loss': []}
+        # train and evaluate-.
+        train_losses, val_losses = [], []
+        
+        for epoch in range(n_epochs):  # fixed number of epochs-.
+            start_time = time.time()
+            train_loss = self.train(model, model.loss, model.optimizer,
+                                    self.train_dataloader)  # per epoch-.
+            print('EPOCH = {0} | Training time : {1}'.
+                  format(epoch, time.time()-start_time))
+            start_time = time.time()
+            val_loss = self.evaluate(model, model.loss, self.val_dataloader)
+            print('EPOCH = {0} | Validation time : {1}'.
+                  format(epoch, time.time()-start_time))
+
+            loss_dir['train_loss'].append(train_loss)
+            loss_dir['val_loss'].append(val_loss)
+            
+            train_losses.append(train_loss)
+            val_losses.append(val_loss)
     
-        return np.mean(train_epoch_loss) ## loss_stats#['train_loss_d'].item()
+        # save the losses-.
+        trial.set_user_attr('all_loss', loss_dir)
+        trial.set_user_attr('train_loss', train_losses)
+        trial.set_user_attr('val_loss', val_losses)
+        
+        return val_losses[-1]
+
+    
+    # define training function-.
+    def train(self, model, criterion, optimizer, dataloader):
+        ''' train DL model '''
+
+        model.to(self.device)
+        model.train()
+        total_loss = 0
+        for i_batch, (inputs, targets) in enumerate(dataloader):
+            inputs, targets = inputs.to(self.device), targets.to(self.device)
+            optimizer.zero_grad()
+            outputs = model(inputs)
+            loss = criterion(outputs, targets)
+            loss.backward()
+            optimizer.step()
+            total_loss += loss.item()
+            
+        return total_loss / len(dataloader)
+
+    # define evaluation function-.
+    def evaluate(self, model, criterion, dataloader):
+
+        model.to(self.device)
+        model.eval()
+        total_loss = 0
+
+        with torch.no_grad():
+            for i_batch, (inputs, targets) in enumerate(dataloader):
+                inputs, targets = inputs.to(self.device), \
+                    targets.to(self.device)
+                outputs = model(inputs)
+                loss = criterion(outputs, targets)
+                total_loss += loss.item()
+                
+        return total_loss / len(dataloader)
 
 # - ======================================================================END79
+
 
 if __name__ == 'main':
     pass

@@ -4,8 +4,8 @@
 # class to plot training and validation loss-.
 # @AUTHOR: Fernando Diego Carazo (@buenaluna) -.
 # start_date (Fr): Sun May 17 22:33:25 CET 2024-.
-# last_modify (Fr): -.
-# last_modify (Arg): jue 08 ago 2024 08:45:45 -03-.
+# last_modify (Arg): jue 08 ago 2024 08:45:45 -03 -.
+# last_modify (Arg): 02 sep 2024 18:41:47 -03 -.
 ##
 # ======================================================================= INI79
 
@@ -17,16 +17,16 @@ import os
 
 
 class PlotLosses():
-    '''
-    class to plot plot training and validation loss
-    '''
-    def __init__(self):
-        '''
-        empty constructor
-        '''
-        pass
+    ''' class to plot plot training and validation loss '''
+    
+    def __init__(self, case_name:str):
+        ''' constructor '''
+        
+        self.case_name = case_name
 
     def plot_loss(self, label_str: str, val: list, dir_save: str)-> None:
+        ''' method to plot loss curve '''
+        
         fig, ax = plt.subplots(nrows=1, ncols=1, figsize=(12, 6))
         plt.plot(range(len(val['train_loss'])), val['train_loss'], 'r*',
                  label='train')
@@ -40,8 +40,9 @@ class PlotLosses():
         ax.legend(loc='best')
         ax.set_title('loss using Feed Forward Neural Network (FFNN)')
 
-        plt.show()
-        fig.savefig(os.path.join(dir_save, 'trainAndValLoss.png'),
+        # plt.show()
+        fig.savefig(os.path.join(dir_save, 'trainAndValLoss'+
+                                 self.case_name+'.png'),
                     format='png', dpi=100)
 
         return None

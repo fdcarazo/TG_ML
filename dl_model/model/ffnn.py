@@ -60,7 +60,8 @@ class MLP(nn.Module):
         # self.to(self.device)
         self.to(device)
         self.learning_rate = learning_rate
-        self.optimizer = optimizer(params= self.parameters(), lr= learning_rate)
+        # self.optimizer = optimizer(params= self.parameters(), lr= learning_rate)
+        self.optimizer = optimizer(params= self.parameters(), lr= self.learning_rate)
         self.loss = loss # nn.MSELoss()
         self.wd = weight_decay
         self.momentum = momentum

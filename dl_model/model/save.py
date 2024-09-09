@@ -6,7 +6,7 @@
 # @AUTHOR: Fernando Diego Carazo (@buenaluna) -.
 # start date (Fr): Mon Mar  4 16:25:40 CET 2024-.
 # last modify (Fr): -.
-# last modify (Arg):vie 09 ago 2024 09:13:33 -03 -.
+# last modify (Arg): vie 06 sep 2024 17:50:44 -03 -.
 ##
 # ====================================================================== INI79
 
@@ -18,13 +18,14 @@ from torch import save as torch_save
 
 # class definition-.
 class SaveDLModelLoss():
-    def __init__(self, dir_save:str):
+    def __init__(self, dir_save:str, case:str):
         self.dir_save = dir_save
+        self.case = case
         
     def save_model(self, model)-> None:
         ''' method to save DL  (pytorch) model '''
         
-        model_name = 'dlModelWithoutHyperOpt'
+        model_name = 'dlModelWithoutHyperOpt'+ self.case
         
         # save the entire NN's model as a pickle file-.
         filemod = self.dir_save+ '/'+ model_name+ '_pkl'+ '.pkl'
@@ -47,10 +48,10 @@ class SaveDLModelLoss():
         return None
 
     
-    def save_loss(self,loss:dict)-> None:
+    def save_loss(self, loss:dict)-> None:
         '''  method to train and validation loss '''
 
-        loss_file = self.dir_save+ '/'+ 'loss.p'
+        loss_file = self.dir_save+ '/'+ 'loss' + self.case + '.p'
         # with open(loss_file, 'wb') as fl: file_loss= open(fl)
 
         file_loss = open(loss_file, 'wb')

@@ -17,6 +17,7 @@ from matplotlib import gridspec
 import matplotlib.pyplot as plt
 import seaborn as sns
 import os
+import pandas as pd
 
 # @ 3D plots-.
 from mpl_toolkits.mplot3d import Axes3D
@@ -39,10 +40,8 @@ class Predict():
         self.feat_vars = feat_vars
         self.targ_vars = targ_vars
         
-    def plot_corr_true_pred_mod(self, dir_save):
-        ''' 
-        plot correlation between predicted and true values-.
-        '''
+    def plot_corr_true_pred_mod(self, dir_save) -> None:
+        ''' plot correlation between predicted and true values '''
         
         plt.rcParams.update({'font.size': 10})
         # gs= gridspec.GridSpec(2,3)  # 6 subfigures (it's a function of number of targets vars)-.
@@ -94,6 +93,14 @@ class Predict():
         plt.show()
         fig.savefig(os.path.join(dir_save,'corrTruePred.png'), format='png', dpi=100)
 
+        # built pd.DataFrame to save true and predicted values-.
+        # print(np.shape(self.y_true.numpy()), np.shape(self.y_true.numpy())); input(11111111)
+        
+        df = pd.DataFrame({'True': self.y_true[:,0], 'Predicte': self.y_pred[:,0]})
+
+        df.to_csv(dir_save+'trueAndPred_valDataset'+'.csv')
+        
+        return None
     
     def plot_pred_error_display(self):
         fig, ax= plt.subplots(1, 1, figsize=(9, 7))

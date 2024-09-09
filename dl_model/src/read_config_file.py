@@ -106,6 +106,7 @@ class Config():
         self.hyper_optim_name = self.config['hyper_optim']['name']
         self.plot_optim_hist = self.config['hyper_optim']['plot_optim_hist']
         self.test = self.config['hyper_optim']['test']
+        self.optuna_epochs = self.config['hyper_optim']['epochs']
 
         
 if __name__ == '__main__':

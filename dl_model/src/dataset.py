@@ -111,6 +111,8 @@ class DataloaderTorch(DataLoader):
     def __init__(self, torch_dataset, batch_size, shuff):
         self.dataloader= DataLoader(torch_dataset,
                                     batch_size= batch_size,
+                                    num_workers=2,
+                                    persistent_workers=True,
                                     shuffle= shuff)
 
 # main (to load as module)-.
