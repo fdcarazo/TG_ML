@@ -180,11 +180,29 @@ def main(config) -> int:
     # TEMPORARY is here (I can't pass in yaml config file, I don't know how do that)
     # layers=[(2048, nn.ReLU(),None), # until now it doesn't work from yaml file-.
     #        (output_size,None,None)]
+
+    ## '''
     layers = [(1024, nn.ReLU(), None),  # for now it isn't work from yaml file-.
               # (256, nn.ReLU(), None),  # for now it isn't work from yaml file-.
               # (1024,nn.ReLU(),None),  # for now it isn't work from yaml file-.
               (output_size, None, None)]
-
+    ## '''
+    '''
+    layers = [(1024, nn.ReLU(), None),  # for now it isn't work from yaml file-.
+              (512, nn.ReLU(), None),  # for now it isn't work from yaml file-.
+              (256 , nn.ReLU(),None),  # for now it isn't work from yaml file-.
+              (128 , nn.ReLU(),None),  # for now it isn't work from yaml file-.
+              (output_size, None, None)]
+    '''
+    '''        
+    layers = [(30, nn.ReLU(), None),  # for now it isn't work from yaml file-.
+              (10, nn.ReLU(), None),  # for now it isn't work from yaml file-.
+              (10, nn.ReLU(),None),   # for now it isn't work from yaml file-.
+              (5 , nn.ReLU(),None),   # for now it isn't work from yaml file-.
+              (1 , nn.ReLU(),None),   # for now it isn't work from yaml file-.
+              (output_size, None, None)]
+    '''
+    
     device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
     # 3-1- DLmodel - FFNN-.
@@ -253,7 +271,7 @@ def main(config) -> int:
 
     if cfg_obj.plot_loss:
         # plot losses (training and validation)-.
-        plotlosses_obj = PlotLosses()
+        plotlosses_obj = PlotLosses('_best_Opt')
         plt_pl = lambda x, y: plotlosses_obj.plot_loss(x, y, cfg_obj.dir_save)
         plt_pl('', ld_)
         # plt_pl('train', ld_['train_loss'])
@@ -262,7 +280,7 @@ def main(config) -> int:
         
     # save train and validatiton losses and DL's model-.
     if cfg_obj.model_loss_save:
-        save_dl_loss_obj = SaveDLModelLoss(cfg_obj.dir_save)
+        save_dl_loss_obj = SaveDLModelLoss(cfg_obj.dir_save, '_best_Opt')
         save_dl_loss_obj.save_model(model)
         save_dl_loss_obj.save_loss(ld_)
 

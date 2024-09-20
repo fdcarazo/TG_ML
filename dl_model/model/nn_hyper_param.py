@@ -47,9 +47,9 @@ class nn_hyper_param_optim():
 
         input_size = input_size  # example input size-.
         # hyperparameters to optimize-.
-        hidden_layers = trial.suggest_int('hidden_layers', 1, 3)
-        hidden_units = trial.suggest_int('hidden_units', 512, 1024)
-        dropout_prob = trial.suggest_float('dropout_prob', 0.0, 0.5)
+        hidden_layers = trial.suggest_int('hidden_layers', 1, 5)
+        hidden_units = trial.suggest_int('hidden_units', 256, 512)
+        dropout_prob = trial.suggest_float('dropout_prob', 0.0, 0.01)
         learning_rate = trial.suggest_loguniform('learning_rate', 1e-5, 1e-1)
         # batch_size = trial.suggest_int('batch_size', 500, 1000)
         

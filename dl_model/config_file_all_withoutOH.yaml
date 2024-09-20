@@ -16,10 +16,13 @@ gen_options:
   # vars_names: ['C', 'H', 'O', 'heat_rate', 'T', 'mass_porc']
   # feat_names: ['heat_rate', 'T']
   # targ_names: ['mass_porc']
-  vars_names: ['C', 'H', 'O', 'heat_rate', 'T', 'mass_porc', 'biomass_ESP', 'biomass_EU', 'biomass_MCP', 'biomass_MSP', 'biomass_MV', 'biomass_OU', 'biomass_PP', 'biomass_SD']
+  ## vars_names: ['C', 'H', 'O', 'heat_rate', 'T', 'mass_porc', 'biomass_ESP', 'biomass_EU', 'biomass_MCP', 'biomass_MSP', 'biomass_MV', 'biomass_OU', 'biomass_PP', 'biomass_SD']
+  vars_names: ['C','H','O','PET','Celulosa','HDPE','LDPE','PP','PS','PVC','PLA','pyreno','beta','T','mass_left']
   # feat_names: ['C', 'H', 'O', 'heat_rate', 'T',  'biomass_ESP', 'biomass_EU', 'biomass_MCP', 'biomass_MSP', 'biomass_MV', 'biomass_OU', 'biomass_PP', 'biomass_SD']
-  feat_names: ['C', 'H', 'O', 'heat_rate', 'T',]
-  targ_names: ['mass_porc']
+  ## feat_names: ['C', 'H', 'O', 'heat_rate', 'T',]
+  feat_names: ['C','H','O','PET','Celulosa','HDPE','LDPE','PP','PS','PVC','PLA','pyreno','beta','T']
+  ## targ_names: ['mass_porc']
+  targ_names: ['mass_left']
   nnn: 10 # number of NN to be used in uncertainty determination-.
   quart: 2 # uncertaninty interval of 95%-.
 
@@ -35,18 +38,19 @@ train_test_torch: # train_test_torch_dataset_dataloader
   test_frac: 0.2
   shuffle: True
   # torch.DataLoader-.
-  batch_size: 1000
+  batch_size: 500
   shuffle_torch: True
   
 dataset:
   path: '/home/fdcarazo/my_github/TG_ML/noTracking_TGL/ds/'
   # name: 'all.csv'
   # name: 'all_encoded.csv'
-  name: 'all_encoded_all.csv'
+  ## name: 'all_encoded_all.csv'
+  name: 'matriz.csv'
   # name: 'all_encoded.csv'
 
 model:
-  name: 'MLP-_' # 1-MLP-_, 2-BNNbnn-_, 3-MAML-_, 3-MAML_from_scratch-_, and
+  name: 'BNNbnn-_' # 1-MLP-_, 2-BNNbnn-_, 3-MAML-_, 3-MAML_from_scratch-_, and
   ## 5-Ensemble-*: with:
   ## * == FusionRegressor, BaggingRegressor, GradientBoostingRegressor, SnapshotEnsembleRegressor
   ##  Ensemble-SnapshotEnsembleRegressor
@@ -55,7 +59,7 @@ model:
   lr: 1.0e-3
   optimizer: 'optim.Adam' # optim.SGD
   loss: nn.MSELoss()
-  epochs: 5000
+  epochs: 500
   weight_decay: 0.0
   momentum: 0.99
   plot_loss: True
@@ -79,4 +83,4 @@ hyper_optim:
   name: 'optuna'  # 1-optuna -.
   plot_optim_hist: False
   test: True
-  epochs: 250  # 500
+  epochs: 100  # 500

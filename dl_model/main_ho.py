@@ -106,7 +106,7 @@ def main(config) -> int:
 
     # 1- load dataset as pandas.DataFrame, features and targers vars names-.
     df = ld(cfg_obj.ds_path+cfg_obj.ds_file, cfg_obj.vars_names)
-
+    
     '''
     vars = cfg_obj.feat_names + cfg_obj.targ_names
     for var_i in vars: print(var_i, df[var_i].min(), df[var_i].max(),
@@ -402,10 +402,18 @@ def main(config) -> int:
         # layers=[(2048, nn.ReLU(),None), # until now it doesn't work from yaml file-.
         #        (output_size,None,None)]
         layers = [(1024, nn.ReLU(), None),  # for now it isn't work from yaml file-.
-                  # (256, nn.ReLU(), None),  # for now it isn't work from yaml file-.
-                  # (1024,nn.ReLU(),None),  # for now it isn't work from yaml file-.
+                  (512, nn.ReLU(), None),  # for now it isn't work from yaml file-.
+                  (256 , nn.ReLU(),None),  # for now it isn't work from yaml file-.
+                  (128 , nn.ReLU(),None),  # for now it isn't work from yaml file-.
                   (output_size, None, None)]
-
+        '''
+        layers = [(30, nn.ReLU(), None),  # for now it isn't work from yaml file-.
+                  (10, nn.ReLU(), None),  # for now it isn't work from yaml file-.
+                  (10, nn.ReLU(),None),   # for now it isn't work from yaml file-.
+                  (5 , nn.ReLU(),None),   # for now it isn't work from yaml file-.
+                  (1 , nn.ReLU(),None),   # for now it isn't work from yaml file-.
+                  (output_size, None, None)]
+        '''
         device = 'cuda' if torch.cuda.is_available() else 'cpu'
 
         # 3-1- DLmodel - FFNN-.
@@ -421,8 +429,8 @@ def main(config) -> int:
                                     cfg_obj.epochs, cfg_obj.optimizer,
                                     cfg_obj.loss,  # I need str and not torch..-.
                                     cfg_obj.ds_file, cfg_obj.dir_results)
-            train_predict_obj = TrainPredict_FFNN(model, train_loader.dataloader,
-                                                  val_loader.dataloader,
+            train_predict_obj = TrainPredict_FFNN(model, train_loader_1.dataloader,
+                                                  val_loader_1.dataloader,
                                                   input_size, output_size, layers,
                                                   device, cfg_obj.lr,
                                                   cfg_obj.optimizer,
@@ -447,8 +455,8 @@ def main(config) -> int:
                                         cfg_obj.kl_l)
             # print(model_bnn); input(77); exit(11)
             train_predict_obj = TrainPredict_BNN(model_bnn,
-                                                 train_loader.dataloader,
-                                                 val_loader.dataloader,
+                                                 train_loader_1.dataloader,
+                                                 val_loader_1.dataloader,
                                                  input_size, output_size,
                                                  eval(cfg_obj.loss),
                                                  eval(cfg_obj.optimizer),
